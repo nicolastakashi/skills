@@ -1,0 +1,36 @@
+{
+  "efatura": {
+    "url": "https://faturas.portaldasfinancas.gov.pt/home.action",
+    "mode": "dry-run",
+    "confidence_thresholds": {
+      "auto_classify": 80,
+      "flag_review": 60
+    },
+    "reports": {
+      "path": "reports/",
+      "include_low_confidence": true
+    },
+    "learning": {
+      "min_samples_for_confidence": 3,
+      "max_history_per_merchant": 10
+    },
+    "agent_browser": {
+      "headed": false,
+      "debug": false,
+      "trace_on_failure": true,
+      "profile_path": null
+    },
+    "cae_hints": {
+      "47111": "Despesas gerais familiares",
+      "47112": "Despesas gerais familiares",
+      "4771": "Despesas gerais familiares",
+      "4773": "Despesas gerais familiares",
+      "4751": "Saúde",
+      "4752": "Saúde",
+      "4763": "Educação",
+      "4520": "Reparação automóveis",
+      "7500": "Despesas Veterinárias",
+      "9311": "Ginásios"
+    }
+  }
+}

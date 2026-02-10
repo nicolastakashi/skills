@@ -1,0 +1,36 @@
+{
+  "version": "1.0",
+  "last_updated": "YYYY-MM-DD",
+  "merchants": {
+    "_schema": {
+      "name": "String - Merchant name (normalized to lowercase)",
+      "cae_code": "String|null - CAE activity code",
+      "classifications": {
+        "category": "String - Expense category",
+        "count": "Number - Times classified as this category",
+        "last_classified": "String - ISO date"
+      },
+      "confidence": {
+        "overall": "Number - 0-100, confidence in most likely category",
+        "most_likely_category": "String - Category with highest confidence"
+      },
+      "notes": "String[] - Notes on conflicting patterns or special cases"
+    },
+    "000000000": {
+      "name": "exemplo merchant",
+      "cae_code": null,
+      "classifications": {
+        "Outro": {
+          "category": "Outro",
+          "count": 1,
+          "last_classified": "2026-01-01"
+        }
+      },
+      "confidence": {
+        "overall": 100,
+        "most_likely_category": "Outro"
+      },
+      "notes": []
+    }
+  }
+}
