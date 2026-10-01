@@ -1,1 +1,3 @@
 .DS_Store
+# Harbor eval runs
+evals/**/jobs/

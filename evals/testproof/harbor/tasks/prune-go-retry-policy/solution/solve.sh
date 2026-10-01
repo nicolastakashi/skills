@@ -1,0 +1,3 @@
+#!/bin/bash
+cp /solution/policy_test.go /app/policy_test.go
+cd /app && go test ./...

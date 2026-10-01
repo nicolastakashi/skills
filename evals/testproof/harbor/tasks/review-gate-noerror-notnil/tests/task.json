@@ -1,0 +1,5 @@
+{
+  "mode": "review",
+  "verdict": "cut",
+  "rule": "G1|G2|result|assert|field"
+}

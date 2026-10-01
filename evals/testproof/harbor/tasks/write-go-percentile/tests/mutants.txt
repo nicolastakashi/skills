@@ -1,0 +1,7 @@
+# name|text to find|replacement (first match only)
+no-empty-check|if len(values) == 0 {|if false {
+no-upper-clamp|if p > 1 {|if false {
+no-copy|copy(s, values)|s = values
+floor-not-ceil|math.Ceil(|math.Floor(
+no-sort|sort.Float64s(s)|_ = sort.Float64s
+no-low-guard|if idx < 0 {|if false {

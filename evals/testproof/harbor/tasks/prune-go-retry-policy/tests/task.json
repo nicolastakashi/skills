@@ -1,0 +1,12 @@
+{
+  "mode": "mutation",
+  "source": "policy.go",
+  "junk": [
+    "TestNextDelay_FirstAttempt",
+    "TestNextDelay_SecondAttempt",
+    "TestNextDelay_DoesNotPanic",
+    "TestNextDelay_ReturnsOK",
+    "TestPolicy_ZeroValueIsUsable",
+    "TestNextDelay_RetryAfterHintUsed"
+  ]
+}
