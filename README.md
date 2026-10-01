@@ -12,6 +12,12 @@ Auto-classify Portugal e-Fatura invoices using agent-browser with configurable d
 
 See `skills/efaturas/references/REFERENCE.md` for detailed usage, examples, and configuration.
 
+### testproof
+
+Checks that tests earn their place. Gate mode reviews new or changed tests; audit mode blocks test deletions that lose coverage. Any language.
+
+Rules come from measured data. See `evals/testproof/EVIDENCE.md` for the data and `evals/testproof/harbor/` for agent-agnostic evals.
+
 ## Installation
 
 npx skills add nicolastakashi/skills
@@ -21,7 +27,9 @@ npx skills add nicolastakashi/skills
 Each skill contains:
 
 - `SKILL.md` - Instructions for the agent
-- `references/` - Supporting documentation and examples
+- `references/` - Supporting documentation and examples (optional)
+
+Evals live outside the skill folders, in `evals/<skill>/`, so they are not installed with the skill.
 
 ## License
 

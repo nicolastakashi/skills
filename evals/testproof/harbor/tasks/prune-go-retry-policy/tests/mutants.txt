@@ -1,0 +1,12 @@
+# name|text to find|replacement (first match only)
+default-base|p.Base = defaultBase|p.Base = 2 * defaultBase
+default-max|p.Max = defaultMax|p.Max = 2 * defaultMax
+default-attempts|p.MaxAttempts = defaultMaxAttempts|p.MaxAttempts = defaultMaxAttempts + 1
+default-hint-cap|p.MaxRetryAfter = defaultMaxRetryAfter|p.MaxRetryAfter = 2 * defaultMaxRetryAfter
+attempts-off-by-one|if attempt >= p.MaxAttempts {|if attempt > p.MaxAttempts {
+no-cap|if delay > p.Max {|if false {
+growth-factor|delay *= 2|delay *= 3
+hint-ignored|if retryAfter > 0 {|if false {
+hint-uncapped|if hint > p.MaxRetryAfter {|if false {
+hint-always-wins|if hint > delay {|if hint > 0 {
+custom-max-ignored|if p.Max <= 0 {|if true {
