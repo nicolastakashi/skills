@@ -1,51 +1,58 @@
 # Agent Skills
 
-A collection of skills for AI coding agents. Skills are packaged instructions and scripts that extend agent capabilities.
+Skills for AI coding agents, in the [Agent Skills](https://agentskills.io/) format. A skill is a set of instructions and reference files that an agent loads when the task matches.
 
-Skills follow the [Agent Skills](https://agentskills.io/) format.
+## Install
 
-## Available Skills
-
-### efaturas
-
-Auto-classify Portugal e-Fatura invoices using agent-browser with configurable debugging.
-
-See `skills/efaturas/references/REFERENCE.md` for detailed usage, examples, and configuration.
-
-### testproof
-
-Checks that tests earn their place. Gate mode reviews new or changed tests; audit mode blocks test deletions that lose coverage. Any language.
-
-Rules come from measured data. See `evals/testproof/EVIDENCE.md` for the data and `evals/testproof/harbor/` for agent-agnostic evals.
-
-### visual-explainer
-
-Turns explanations into beautiful, animated, token-efficient HTML pages. Entry point that reads the brief, sets three dials (variance, motion, density) and pulls in the three skills below. Stack: Tailwind v4, GSAP 3.15, Lucide, Geist. See `skills/visual-explainer/references/` for the pinned stack per surface (Artifact or repo).
-
-### design-direction
-
-Picks a distinctive visual direction (Instrument, Cinematic, Night ops, Editorial, Blueprint), one bold move, tokens first, and a banned list of AI design tells.
-
-### motion-choreography
-
-Purposeful GSAP motion: camera with depth of field, traces along connections, linked views, staged reveals and a player with segmented progress. Tested skeletons in `skills/motion-choreography/references/skeletons.md`. Pairs with the official [gsap-skills](https://github.com/greensock/gsap-skills).
-
-### visual-critique
-
-One screenshot review pass (light, dark, phone) against the design and motion rules, plus refinement commands: bolder, quieter, polish, animate, surprise me.
-
-## Installation
-
+```sh
 npx skills add nicolastakashi/skills
+npx skills add greensock/gsap-skills   # used by motion-choreography
+```
 
-## Skill Structure
+## Skills
 
-Each skill contains:
+### Standalone
 
-- `SKILL.md` - Instructions for the agent
-- `references/` - Supporting documentation and examples (optional)
+| Skill | Use it when | Details |
+|---|---|---|
+| `testproof` | You add, change, review, or delete tests. Gate mode reviews new tests; audit mode blocks deletions that lose coverage. Any language. | [`evals/testproof/EVIDENCE.md`](evals/testproof/EVIDENCE.md) |
 
-Evals live outside the skill folders, in `evals/<skill>/`, so they are not installed with the skill.
+### Visual bundle
+
+`visual-explainer` is the entry point. It reads the brief, sets three dials (variance, motion, density), and runs the other three skills:
+
+```
+visual-explainer ━▶ design-direction ━▶ motion-choreography ━▶ visual-critique
+```
+
+Stack: Tailwind v4, GSAP 3.15, Lucide, Geist.
+
+Install the bundle (the explainer needs all four):
+
+```sh
+npx skills add nicolastakashi/skills -s visual-explainer design-direction motion-choreography visual-critique
+```
+
+| Skill | Use it when | Details |
+|---|---|---|
+| `visual-explainer` | You want a concept, flow, or plan shown as an animated HTML page. | [`references/`](skills/visual-explainer/references/): pinned stack per surface (Artifact or repo) |
+| `design-direction` | A page looks generic or "AI-made". Picks one visual direction and one bold move, and bans common AI design tells. | [`references/`](skills/design-direction/references/) |
+| `motion-choreography` | A page needs motion that explains: camera moves, traces along connections, staged reveals, a step player. | [`references/skeletons.md`](skills/motion-choreography/references/skeletons.md). Pairs with [gsap-skills](https://github.com/greensock/gsap-skills). |
+| `visual-critique` | A page is built and needs one review pass (light, dark, phone), or a refinement: bolder, quieter, polish, animate, surprise me. | — |
+
+## Layout
+
+```
+skills/<skill>/
+├── SKILL.md       instructions for the agent
+└── references/    supporting docs and examples (optional)
+
+evals/<skill>/     evals, not installed with the skill
+```
+
+## Evals
+
+Evals live in `evals/<skill>/`, outside the skill folders, so they are not installed with the skill. `testproof` has agent-agnostic evals in [`evals/testproof/harbor/`](evals/testproof/harbor/).
 
 ## License
 
