@@ -10,6 +10,9 @@ Each task runs in Docker. A Go verifier scores the result. No LLM judge.
 | `write-go-percentile` | Writes Go tests for a function. | `mutation_score`: share of mutants the tests catch. |
 | `write-go-retry-policy` | Writes Go tests for a retry policy with defaults and caps. | `mutation_score` |
 | `prune-go-retry-policy` | Cleans up a messy test file. | `mutation_score`: coverage kept. `junk_removed`: share of low-value tests removed. |
+| `ticket-go-retry-min-delay` | Builds a small feature from a ticket that never mentions tests. | `tests_pass`, `tests_added`. Activation is read from the logs, see below. |
+| `ticket-go-retry-multiplier` | Same, other feature. | same |
+| `ticket-go-percentiles` | Same, other package. | same |
 | `review-gate-noerror-notnil` | Reviews a new test. | `verdict`: 1 if it says `cut`. `rule`: 1 if the reason names the right rule. |
 | `review-audit-lost-negative` | Reviews a test deletion. | `verdict`: 1 if it says `block`. `rule`: 1 if the reason names the right rule. |
 
@@ -59,3 +62,13 @@ Expect `oracle` to score 1 and `nop` to score 0. For `prune`, `nop` keeps full c
 harbor run -p tasks -a oracle
 harbor run -p tasks -a nop
 ```
+
+## Check activation
+
+Ticket tasks measure if the agent opens the skill on its own. The verifier cannot see that, so read the agent logs on the host:
+
+```bash
+./activation.sh jobs/<job>
+```
+
+Do not pass `-o` with a path outside this folder. Docker cannot mount it and every trial fails with `RewardFileNotFoundError`.
