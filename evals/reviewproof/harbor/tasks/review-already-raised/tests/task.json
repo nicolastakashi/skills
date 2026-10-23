@@ -1,0 +1,5 @@
+{
+  "expect": [{"name": "timeout_unit", "file": "config.go", "from": 17, "to": 36, "verdicts": ["fix"]}],
+  "forbid": [{"name": "no_repeat", "file": "config.go", "from": 38, "to": 48}],
+  "require": ["timeout_unit", "no_repeat", "evidence"]
+}

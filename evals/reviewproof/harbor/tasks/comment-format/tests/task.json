@@ -1,0 +1,4 @@
+{
+  "expect": [{"name": "replace_once", "file": "slug.go", "from": 6, "to": 11, "verdicts": ["fix"]}],
+  "require": ["replace_once", "format", "evidence"]
+}

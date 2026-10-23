@@ -1,0 +1,4 @@
+{
+  "expect": [{"name": "window_reset", "file": "limiter.go", "from": 21, "to": 33, "verdicts": ["fix"]}],
+  "require": ["window_reset", "evidence"]
+}

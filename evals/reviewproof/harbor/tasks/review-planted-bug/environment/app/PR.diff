@@ -1,0 +1,67 @@
+diff --git a/limiter.go b/limiter.go
+index d27e858..e56c5ad 100644
+--- a/limiter.go
++++ b/limiter.go
+@@ -4,12 +4,31 @@ package limiter
+ import "time"
+ 
+ // Limiter allows at most Max requests per user in each fixed window.
++// A new window starts when the current one has run for Window.
+ type Limiter struct {
+ 	Max    int
+ 	Window time.Duration
++
++	windowStart time.Time
++	counts      map[string]int
+ }
+ 
+ // New returns a Limiter with the given cap and window.
+ func New(max int, window time.Duration) *Limiter {
+-	return &Limiter{Max: max, Window: window}
++	return &Limiter{Max: max, Window: window, counts: map[string]int{}}
++}
++
++// Allow reports whether user may make another request at now.
++func (l *Limiter) Allow(user string, now time.Time) bool {
++	if l.windowStart.IsZero() {
++		l.windowStart = now
++	}
++	if now.Sub(l.windowStart) >= l.Window {
++		l.windowStart = now
++	}
++	if l.counts[user] >= l.Max {
++		return false
++	}
++	l.counts[user]++
++	return true
+ }
+diff --git a/head/limiter_test.go b/limiter_test.go
+new file mode 100644
+index 0000000..e512736
+--- /dev/null
++++ b/limiter_test.go
+@@ -0,0 +1,24 @@
++package limiter
++
++import (
++	"testing"
++	"time"
++)
++
++func TestAllowCapsRequestsInOneWindow(t *testing.T) {
++	l := New(2, time.Minute)
++	now := time.Unix(0, 0)
++	for i, want := range []bool{true, true, false} {
++		if got := l.Allow("ana", now); got != want {
++			t.Fatalf("request %d: Allow = %v, want %v", i+1, got, want)
++		}
++	}
++}
++
++func TestAllowCountsUsersSeparately(t *testing.T) {
++	l := New(1, time.Minute)
++	now := time.Unix(0, 0)
++	if !l.Allow("ana", now) || !l.Allow("ben", now) {
++		t.Fatal("each user should get their own first request")
++	}
++}

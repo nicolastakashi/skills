@@ -1,0 +1,9 @@
+{
+  "expect": [
+    {"name": "r1_real", "id": "r1", "verdicts": ["fix"]},
+    {"name": "r2_real", "id": "r2", "verdicts": ["fix"]},
+    {"name": "r3_false", "id": "r3", "verdicts": ["drop"]},
+    {"name": "r4_out_of_scope", "id": "r4", "verdicts": ["keep", "decide"]}
+  ],
+  "require": ["r1_real", "r2_real", "r3_false", "r4_out_of_scope", "evidence"]
+}
