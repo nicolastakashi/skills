@@ -11,7 +11,7 @@ Color is a UX decision, not decoration. Never pick it silently from the directio
 - two or three proposed palettes, each named and with a one-line rationale tied to the subject (for example "Signal: neutral slate, violet for the new version, green and amber for health").
 If the user has no palette, or the session is unattended, use the default palette below and say so in one line.
 
-**Default palette (no user palette).** Blue and grey carry the page; green and red are reserved for good and bad. Values were checked for WCAG contrast and for separation under protanopia and deuteranopia (green is lighter and slightly teal, red darker, so the pair differs in lightness, not only hue).
+**Default palette (no user palette).** Blue and grey carry the page; green and red are reserved for good and bad; amber and plum are for a third and fourth entity. Values were checked for WCAG contrast and for separation under protanopia and deuteranopia (green is lighter and slightly teal, red darker, so the pair differs in lightness, not only hue).
 
 | Role | Light | Dark | Use |
 |---|---|---|---|
@@ -20,13 +20,19 @@ If the user has no palette, or the session is unattended, use the default palett
 | `--fg` | `oklch(0.22 0.02 255)` | `oklch(0.95 0.006 255)` | text, 16:1 |
 | `--muted-fg` | `oklch(0.5 0.02 255)` | `oklch(0.7 0.018 255)` | secondary text, 5.7:1 / 7:1 |
 | `--border` | `oklch(0.9 0.008 255)` | `oklch(0.31 0.02 255)` | lines |
-| `--neutral` | `oklch(0.62 0.02 255)` slate | same | old, inactive, baseline, "the other one" |
+| `--neutral` | `oklch(0.53 0.02 255)` slate | `oklch(0.62 0.02 255)` | old, inactive, baseline, "the other one" |
 | `--accent` | `oklch(0.55 0.18 258)` blue | `oklch(0.72 0.15 252)` | new, active, the thing to follow |
-| `--ok` | `oklch(0.64 0.14 165)` | `oklch(0.82 0.14 165)` | good only (shapes; for text use `oklch(0.5 0.12 165)` in light) |
+| `--ok` | `oklch(0.64 0.12 170)` | `oklch(0.82 0.14 165)` | good only (shapes; for text use `oklch(0.54 0.1 170)` in light) |
 | `--error` | `oklch(0.5 0.2 25)` | `oklch(0.62 0.2 22)` | bad only |
+| `--cat-1` | `oklch(0.62 0.13 75)` amber | `oklch(0.78 0.16 75)` | third entity, never a state |
+| `--cat-2` | `oklch(0.42 0.1 315)` plum | `oklch(0.6 0.19 315)` | fourth entity, never a state |
+
+Every pair in this table that the viewer must tell apart (accent, neutral, ok, error, cat-1, cat-2) keeps an OKLab distance of 10 or more, in normal vision and simulated protanopia and deuteranopia, in both themes, at 3:1 or better against `--bg`.
 
 How to map with only these:
-- Comparing two entities (old vs new, before vs after, A vs B): slate vs blue. A third entity uses a darker or lighter blue step, never a new hue.
+- Comparing two entities (old vs new, before vs after, A vs B): slate vs blue. A third entity is `--cat-1`, a fourth `--cat-2`. More than four: group them, or tell them apart by label and icon on one neutral, never by more hues or by steps of blue.
+- `--cat-1` and `--cat-2` mark entities only. Amber is not a warning here, so always pair it with the entity's label.
+- No section is one hue. If every element in a section is blue, or every element is grey, the color carries no meaning: keep the accent for the one thing to follow, give compared entities their entity colors, and leave the rest neutral.
 - UI chrome (progress bar, links, focus rings) uses `--fg` or neutrals when blue is taken by an entity, so blue keeps one meaning.
 - When blue is taken by an entity, the moving thing to follow (traffic, a request, data) is drawn in `--fg` with a soft glow: bright ink on dark, dark ink on light. Never the same hue as an entity.
 - In-progress or pending (probing, starting, terminating): neutral with a dashed border, a spinner or a pulse. Not yellow, not green.

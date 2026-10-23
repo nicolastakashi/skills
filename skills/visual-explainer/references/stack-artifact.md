@@ -33,14 +33,14 @@ Every color is a token. Light on bare `:root`, dark redefined twice so both the 
 <style>
 /* default palette, see design-direction. Replace with the user's palette when given. */
 :root{--bg:oklch(0.985 0.003 247);--card:oklch(1 0 0);--fg:oklch(0.22 0.02 255);--muted:oklch(0.96 0.005 255);
---muted-fg:oklch(0.5 0.02 255);--border:oklch(0.9 0.008 255);--neutral:oklch(0.62 0.02 255);
---accent:oklch(0.55 0.18 258);--accent-soft:oklch(0.55 0.18 258/.14);--ok:oklch(0.64 0.14 165);--error:oklch(0.5 0.2 25);
---grid:oklch(0.22 0.02 255/.05)}
+--muted-fg:oklch(0.5 0.02 255);--border:oklch(0.9 0.008 255);--neutral:oklch(0.53 0.02 255);
+--accent:oklch(0.55 0.18 258);--accent-soft:oklch(0.55 0.18 258/.14);--ok:oklch(0.64 0.12 170);--error:oklch(0.5 0.2 25);
+--cat-1:oklch(0.62 0.13 75);--cat-2:oklch(0.42 0.1 315);--grid:oklch(0.22 0.02 255/.05)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){/* DARK */}}
 :root[data-theme="dark"]{/* DARK, same values */}
 /* DARK = --bg:oklch(0.17 0.015 255);--card:oklch(0.21 0.017 255);--fg:oklch(0.95 0.006 255);--muted:oklch(0.25 0.018 255);
-   --muted-fg:oklch(0.7 0.018 255);--border:oklch(0.31 0.02 255);--accent:oklch(0.72 0.15 252);--accent-soft:oklch(0.72 0.15 252/.18);
-   --ok:oklch(0.82 0.14 165);--error:oklch(0.62 0.2 22);--grid:oklch(1 0 0/.045);color-scheme:dark */
+   --muted-fg:oklch(0.7 0.018 255);--border:oklch(0.31 0.02 255);--neutral:oklch(0.62 0.02 255);--accent:oklch(0.72 0.15 252);--accent-soft:oklch(0.72 0.15 252/.18);
+   --ok:oklch(0.82 0.14 165);--error:oklch(0.62 0.2 22);--cat-1:oklch(0.78 0.16 75);--cat-2:oklch(0.6 0.19 315);--grid:oklch(1 0 0/.045);color-scheme:dark */
 body{background:var(--bg);color:var(--fg);font-family:Geist,ui-sans-serif,system-ui,sans-serif}
 </style>
 ```
@@ -53,7 +53,7 @@ A dark-only direction puts the dark values on bare `:root` with `color-scheme:da
 <style type="text/tailwindcss">
 @theme inline{--color-bg:var(--bg);--color-fg:var(--fg);--color-card:var(--card);--color-muted:var(--muted);
 --color-muted-fg:var(--muted-fg);--color-border:var(--border);--color-accent:var(--accent);
---color-neutral:var(--neutral);--color-ok:var(--ok);--color-error:var(--error);--font-mono:"Geist Mono",ui-monospace,monospace}
+--color-neutral:var(--neutral);--color-ok:var(--ok);--color-error:var(--error);--color-cat-1:var(--cat-1);--color-cat-2:var(--cat-2);--font-mono:"Geist Mono",ui-monospace,monospace}
 @layer components{
 .card{@apply rounded-xl border border-border bg-card shadow-[0_1px_2px_rgb(0_0_0/.04)]}
 .btn{@apply inline-flex items-center gap-1.5 h-8 px-3 rounded-md text-[13px] font-medium border border-border bg-card hover:bg-muted transition-colors focus-visible:outline-2 focus-visible:outline-accent}
@@ -100,6 +100,25 @@ Prism's theme stylesheets cannot be linked, and they would not match anyway. Use
 ```
 
 To point at specific lines, add a short comment in the code (`# never fewer than 3 ready`) instead of custom highlighting markup. When the user's palette is used, derive `--code-*` from it the same way: keys from the accent, everything else in its neutrals.
+
+## Tabs (Alpine)
+
+The hash keeps the open tab, so a shared link opens the right tab.
+
+```html
+<div x-data="{tab: location.hash.slice(1) || 'overview'}" x-init="$watch('tab', t => history.replaceState(null, '', '#' + t))">
+  <nav class="flex gap-1 border-b border-border overflow-x-auto" role="tablist">
+    <template x-for="t in ['overview','architecture','open-questions','delivery']">
+      <button role="tab" class="h-9 px-3 text-[13px] font-medium -mb-px border-b-2 whitespace-nowrap"
+        :class="tab === t ? 'border-fg text-fg' : 'border-transparent text-muted-fg hover:text-fg'"
+        :aria-selected="tab === t" @click="tab = t" x-text="t.replace('-', ' ')"></button>
+    </template>
+  </nav>
+  <section x-show="tab === 'overview'" role="tabpanel">...</section>
+</div>
+```
+
+A stage inside a hidden tab has no size, so its layout reads as zero. Build or rebuild its timeline when its tab is shown (`$watch('tab', ...)`), not on page load.
 
 ## Tailwind v4 gotchas
 
