@@ -1,6 +1,6 @@
 ---
 name: testproof
-description: Use when adding, writing, changing, or reviewing tests, including requests like "add tests for", "write tests", "cover this with tests", or fixing a bug. Also use when cleaning up, pruning, deduplicating, merging, or deleting tests, like "clean up this test file" or "remove redundant tests". Decides if each test earns its place. Any language.
+description: Use whenever you write or change a test, including tests that ship with a feature, a fix or a ticket, and requests like "add tests for" or "cover this with tests". Also use when reviewing, cleaning up, pruning, deduplicating, merging, or deleting tests. Decides if each test earns its place. Any language.
 ---
 
 # testproof

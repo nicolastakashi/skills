@@ -1,0 +1,3 @@
+#!/bin/bash
+cp /solution/percentile.go /app/percentile.go
+cd /app && go build ./...

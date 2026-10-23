@@ -1,11 +1,14 @@
 // Command verify scores one Harbor task and writes /logs/verifier/reward.json.
 //
-// It reads /tests/task.json. Two modes:
+// It reads /tests/task.json. Three modes:
 //
 //	mutation: the agent wrote or pruned tests in /app. Each mutant in
 //	          /tests/mutants.txt ("name|from|to", a literal replacement in the
 //	          source file) must make the tests fail. Optional "junk" lists test
 //	          functions that should be removed.
+//	ticket:   the agent built a feature in /app. Scores that `go test` passes
+//	          and counts the tests it added. Skill activation is read from the
+//	          agent logs on the host, not here.
 //	review:   the agent wrote /app/verdict.json. Its verdict must match, and
 //	          its rule must match the "rule" regular expression.
 package main
@@ -46,6 +49,8 @@ func main() {
 	switch t.Mode {
 	case "mutation":
 		reward = scoreMutation(t)
+	case "ticket":
+		reward = scoreTicket()
 	case "review":
 		reward = scoreReview(t)
 	default:
@@ -102,6 +107,13 @@ func scoreMutation(t task) map[string]any {
 		reward["junk_removed"] = ratio(removed, len(t.Junk))
 	}
 	return reward
+}
+
+func scoreTicket() map[string]any {
+	return map[string]any{
+		"tests_pass":  b2i(goTestPasses("baseline")),
+		"tests_added": strings.Count(allTestSource(), "func Test"),
+	}
 }
 
 func scoreReview(t task) map[string]any {
