@@ -46,7 +46,12 @@ harbor run -p tasks -a claude-code -m sonnet -k 5
 
 # with the skill
 harbor run -p tasks -a claude-code -m sonnet -k 5 --skill ../../../skills/reviewproof
+
+# one row per task: scores, cost, skill and /code-review use
+./summary.py jobs/<job>
 ```
+
+For a Claude subscription instead of an API key, put `CLAUDE_CODE_OAUTH_TOKEN` and `CLAUDE_FORCE_OAUTH=1` in a file and pass `--env-file <file>`.
 
 ## Check the harness
 
