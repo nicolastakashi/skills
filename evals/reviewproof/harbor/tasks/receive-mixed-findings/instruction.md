@@ -6,6 +6,6 @@ Write `/app/review.json` with one entry per finding, using the finding's `id`:
 {"findings": [{"id": "r1", "file": "example.go", "line": 12, "verdict": "fix", "evidence": "...", "comment": "..."}]}
 ```
 
-- `verdict`: `fix` (confirmed bug), `decide` (needs a human or product decision), `keep` (leave as is), or `drop` (checked, not a problem).
-- `evidence`: what proves the verdict, for example `example.go:12`, a test name, or a command and its output.
+- `verdict`: `fix` (confirmed bug that this PR should fix), `decide` (needs a human or product decision), `keep` (leave as is in this PR), or `drop` (checked, not a problem).
+- `evidence`: what proves the verdict. It must cite `file:line`, a test name, or a command and its output.
 - `comment`: the reply to post on the reviewer's thread. Leave it empty when no reply is needed.

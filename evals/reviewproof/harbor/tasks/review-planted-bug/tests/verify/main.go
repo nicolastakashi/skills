@@ -23,7 +23,7 @@ const (
 )
 
 var (
-	evidenceRe = regexp.MustCompile(`\w+\.go:\d+|\bTest[A-Z]\w*|\bgo (test|vet|run|build)\b`)
+	evidenceRe = regexp.MustCompile(`[\w-]+\.\w+:\d+|\bTest[A-Z]\w*|\bgo (test|vet|run|build)\b`)
 	labelRe    = regexp.MustCompile(`^(praise|nitpick|suggestion|issue|todo|question|thought|chore|note|typo|polish|quibble)(\s?\([a-z ,-]+\))?: \S`)
 )
 
@@ -43,6 +43,7 @@ type match struct {
 	From     int      `json:"from"`
 	To       int      `json:"to"`
 	Verdicts []string `json:"verdicts"` // expect only
+	Pattern  string   `json:"pattern"`  // forbid only: the comment must also match, so other findings on the same lines still count
 }
 
 type task struct {
@@ -152,7 +153,8 @@ func (want match) matches(got finding) bool {
 	if want.ID != "" && strings.TrimSpace(got.ID) == want.ID {
 		return true
 	}
-	return want.File != "" && cleanPath(got.File) == want.File && got.Line >= want.From && got.Line <= want.To
+	inRange := want.File != "" && cleanPath(got.File) == want.File && got.Line >= want.From && got.Line <= want.To
+	return inRange && (want.Pattern == "" || regexp.MustCompile("(?i)"+want.Pattern).MatchString(got.Comment))
 }
 
 func posted(got finding) bool {
