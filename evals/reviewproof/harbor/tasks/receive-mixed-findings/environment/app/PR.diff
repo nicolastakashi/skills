@@ -1,0 +1,93 @@
+diff --git a/cache.go b/cache.go
+index 6ad0cf0..a14efbb 100644
+--- a/cache.go
++++ b/cache.go
+@@ -1,34 +1,54 @@
+ // Package cache is an in-memory key-value cache.
+ package cache
+ 
+-import "sync"
++import (
++	"sync"
++	"time"
++)
+ 
+ type entry struct {
+-	value string
++	value   string
++	expires time.Time
+ }
+ 
+ // Cache is safe for concurrent use.
+ type Cache struct {
+ 	mu    sync.Mutex
+ 	items map[string]entry
++	now   func() time.Time
+ }
+ 
+ // New returns an empty Cache.
+ func New() *Cache {
+-	return &Cache{items: map[string]entry{}}
++	return &Cache{items: map[string]entry{}, now: time.Now}
+ }
+ 
+-// Set stores value under key.
+-func (c *Cache) Set(key, value string) {
++// Set stores value under key for ttl.
++func (c *Cache) Set(key, value string, ttl time.Duration) {
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+-	c.items[key] = entry{value: value}
++	c.items[key] = entry{value: value, expires: c.now().Add(ttl)}
+ }
+ 
+-// Get returns the value for key.
++// Get returns the value for key. Expired entries are removed and reported
++// as missing.
+ func (c *Cache) Get(key string) (string, bool) {
+ 	c.mu.Lock()
+ 	defer c.mu.Unlock()
+ 	e, ok := c.items[key]
+-	return e.value, ok
++	if !ok {
++		return "", false
++	}
++	if c.now().Before(e.expires) {
++		delete(c.items, key)
++		return "", false
++	}
++	return e.value, true
++}
++
++// Len returns the number of entries that have not expired.
++func (c *Cache) Len() int {
++	c.mu.Lock()
++	defer c.mu.Unlock()
++	return len(c.items)
+ }
+diff --git a/head/cache_test.go b/cache_test.go
+new file mode 100644
+index 0000000..cf35340
+--- /dev/null
++++ b/cache_test.go
+@@ -0,0 +1,20 @@
++package cache
++
++import "testing"
++
++func TestGetMissingKey(t *testing.T) {
++	c := New()
++	if _, ok := c.Get("nope"); ok {
++		t.Fatal("Get on an empty cache should miss")
++	}
++}
++
++func TestPurgeCallsOnEvict(t *testing.T) {
++	c := New()
++	c.items["a"] = entry{value: "1"}
++	var evicted []string
++	c.Purge(func(k string) { evicted = append(evicted, k) })
++	if len(evicted) != 1 || evicted[0] != "a" {
++		t.Fatalf("evicted = %v", evicted)
++	}
++}

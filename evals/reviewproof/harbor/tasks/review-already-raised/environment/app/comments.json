@@ -1,0 +1,9 @@
+[
+  {
+    "id": 101,
+    "user": "lint-bot",
+    "path": "config.go",
+    "line": 44,
+    "body": "issue: ParsePort accepts 65536\n\nThe check is `p > 65536`, so 65536 passes even though the doc says the maximum is 65535."
+  }
+]

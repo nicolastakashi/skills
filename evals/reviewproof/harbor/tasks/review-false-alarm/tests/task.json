@@ -1,0 +1,36 @@
+{
+  "expect": [
+    {
+      "name": "chunk_remainder",
+      "file": "batch.go",
+      "from": 6,
+      "to": 14,
+      "verdicts": [
+        "fix"
+      ]
+    },
+    {
+      "name": "trap_dropped",
+      "file": "batch.go",
+      "from": 16,
+      "to": 36,
+      "verdicts": [
+        "drop"
+      ]
+    }
+  ],
+  "forbid": [
+    {
+      "name": "no_false_alarm",
+      "file": "batch.go",
+      "from": 16,
+      "to": 36,
+      "pattern": "loop.?var|captur|closure|per.?iteration"
+    }
+  ],
+  "require": [
+    "chunk_remainder",
+    "no_false_alarm",
+    "evidence"
+  ]
+}
