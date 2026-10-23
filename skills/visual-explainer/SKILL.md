@@ -45,6 +45,14 @@ A storyboard is 4 to 8 lines, one per frame: what is on screen, what moves, what
 
 **Skip it when** the page is static or reference material, a comparison, motion is only reveals and hover (MOTION 4 or lower), the change is an edit to an existing page, or the user already described the frames.
 
+A storyboard for a mechanism answers three questions, each in a frame:
+
+- **Trigger:** what starts it (a schedule, an event, a request, a poll).
+- **Order:** how items move through it (FIFO, priority, fan-out, one at a time or in parallel).
+- **Pressure:** what happens when it is overloaded or a part fails (items wait, drop, retry, back off).
+
+A storyboard without a pressure frame is not finished.
+
 Test every storyboard with one question: do the verbs describe movement between places (enters, fills, sweeps, slides, leaves)? If most frames say "appears", "highlights" or "fades", the motion is decoration. Redesign the diagram until the core concept is a place or a thing that changes.
 
 ## 5. Pick the stack for the surface
@@ -88,6 +96,23 @@ Card inner padding is the same on every card (20 or 24px). Never use a bigger ga
 
 Check 400px, 768px and 1280px. At tablet width nothing should be squeezed side by side.
 
+### Docs with several parts: tabs
+
+Use tabs when the page has three or more parts (how it works, what we decided, what is open, what ships when) and would need long scrolling, or when it will be updated over many sessions. With fewer parts, keep one page with `h2` sections.
+
+- **One tab per part of the work, never per item.** `Open questions` is one tab that holds every question (Q1 to Q20 are rows in it, not tabs). Name tabs with the reader's word: `Architecture`, `Requirements`, `Open questions`, `Delivery`. Use the user's names when they gave them.
+- **Five tabs at most.** A sixth means two tabs overlap: merge them, or move content out to the tracker.
+- **The first tab is the overview:** thesis, the main animation, and one line per other tab that says what the reader finds there.
+- **Each tab follows the reading order above** (thesis, stage, companions, detail), with at most one animated stage.
+- **Every section opens with its answer** in one sentence: the proposal, the decision, or the status. Detail comes after.
+- **Each fact lives in one place.** If two tabs need it, one owns it and the other links to it. Before you add a section, check that no other tab already says it.
+- **Only what the reader acts on:** decisions, open questions, designs, and links. History, logs and long notes go to the tracker or notes, with a link.
+- **Done items leave the main flow.** Closed questions, shipped tickets and old decisions go into one collapsed `<details>` at the end of their tab, one line each.
+- **Status shows what blocks it.** Each tracked item has a state chip, and a blocked item names the blocker ("blocked by API delete"), not only a red mark.
+- **Edits start with placement.** Decide which tab owns the new content before you write it. If no tab fits, propose a new tab. Never append to the end of the page.
+
+Tab markup is in the stack reference.
+
 ## 7. Token budget rules
 
 - Copy the base block from the stack reference verbatim, then use only classes. Do not write custom CSS that Tailwind or the component layer already covers.
@@ -100,7 +125,19 @@ Check 400px, 768px and 1280px. At tablet width nothing should be squeezed side b
 ## 8. Content rules
 
 - Real content, real units, real names from the subject (span names, ms, ids, versions). No lorem ipsum, no "Acme", no fake-precise numbers without a source.
+- Component names come from the code or the system. When it has none, use the industry term (queue, worker, scheduler, load balancer). Never invent a name like "dispatch service".
+- Every mark (dot, square, bar, chip) has a label or a legend entry. A mark with neither is removed. A section that does not serve the brief's "one thing" is removed too.
 - Short headline (8 words or fewer is ideal), short paragraphs. The page explains, it does not market.
+- **Text budget.** The animation carries the explanation; text only names what the viewer sees.
+  - Step caption: one sentence.
+  - Diagram nodes: a name and at most one short line (a value, a state). No sentences inside boxes.
+  - Section prose: about 80 words. More than that becomes a table or a list, goes into a collapsed `<details>`, or moves out behind a link.
+  - When the user asks for less text, cut words. Do not move the same words into more boxes.
+- **No AI-sounding copy.** Say the thing directly. Banned:
+  - Contrast framing: "Two new things, not a new system", "It's not X, it's Y".
+  - Staged openers: "First, answer one question", "Here's the thing", "The key insight:".
+  - One-line punchline closers after a paragraph that already made the point.
+  - If a prose-cleaning skill is installed (for example `unslop` or `humanizer`), run the visible copy through it.
 - No em dashes in visible copy. Use commas, periods or line breaks.
 - Write in the user's language.
 - Every code, config or command block gets syntax highlighting (see the stack reference). Never hand-color code.
@@ -109,8 +146,11 @@ Check 400px, 768px and 1280px. At tablet width nothing should be squeezed side b
 
 1. Brief line and dials.
 2. Sketch the content architecture (section 6) as a list of rows, and write the storyboard if section 4 asks for one.
-3. Load `design-direction` and its `references/color.md`: choose a direction, take the palette from the user, the repo's design system, a question, or the default (in that order), then write the color map and tokens.
-4. Load `motion-choreography` and pick the patterns that serve the "one thing".
-5. Build from the stack reference.
-6. Load `visual-critique` and do one review pass.
-7. Deliver: publish as an Artifact when available (two to four word title, one sentence description), otherwise write the file next to the work. Reply with one or two lines on what the page shows.
+3. List every arrow in the diagram as `from → to: what flows`, each with evidence: `file:line`, a doc link, or the user's words. An arrow without evidence is drawn dashed with an "unverified" label, or not drawn. Write the list as a comment at the top of the file.
+4. Load `design-direction` and its `references/color.md`: choose a direction, take the palette from the user, the repo's design system, a question, or the default (in that order), then write the color map and tokens.
+5. Load `motion-choreography` and pick the patterns that serve the "one thing".
+6. Build from the stack reference.
+7. Load `visual-critique` and do one review pass.
+8. Deliver: publish as an Artifact when available (two to four word title, one sentence description), otherwise write the file next to the work. Reply with one or two lines on what the page shows.
+
+**Edits to an existing page** skip steps 1, 2, 4 and 5. If the edit adds or changes an arrow, do step 3 for that arrow. Edit in place, then run the edit pass from `visual-critique` before you republish. Every edit, however small: most layout bugs come from edits, not first builds.

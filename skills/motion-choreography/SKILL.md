@@ -57,6 +57,7 @@ Pair it with depth of field: nodes outside the current focus get `blur(3px)` and
 - One master `gsap.timeline({ paused: true })` with a label per step (`s0`, `s1` ...). All tweens go on it, so scrubbing and stepping always work, backwards too.
 - Always give controls (see `player`): play and pause, previous and next step, a segmented progress bar (one segment per step, click or drag to seek), keyboard (space, arrows).
 - Autoplay once, about one second after the entrance reveal.
+- The last step always shows the whole system: the camera pulls back to fit-all (or, without a camera, every node is in focus again), and the result of each step stays visible. The viewer ends on the big picture, never on a close-up of the last detail.
 - Rest state is readable: before the timeline runs, nodes, base connections and ghost bars are visible. Animation adds the accent layer on top.
 - Positions come from layout, never hard-coded pixels. On resize, recompute and rebuild the timeline, keeping its progress. Rebuild only when the width changes, so a layout that sets the stage height does not loop.
 - Text that changes over time (counters, status chips, step captions) is derived from the playhead in `sync()`, never set by `tl.call()`. Then scrubbing backwards and jumping between steps always show the right values.
