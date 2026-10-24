@@ -1,0 +1,25 @@
+schema_version = "1.4"
+artifacts = ["/app/review.json"]
+
+[metadata]
+category = "receive"
+source = "synthetic; 2 real, 1 false, 1 out-of-scope finding"
+
+[verifier]
+timeout_sec = 600.0
+collect = []
+
+[verifier.env]
+
+[agent]
+timeout_sec = 600.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+os = "linux"
+mcp_servers = []
+
+[environment.env]
+
+[solution.env]

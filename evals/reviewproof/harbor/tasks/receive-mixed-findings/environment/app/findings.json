@@ -1,0 +1,6 @@
+[
+  {"id": "r1", "file": "cache.go", "line": 42, "body": "Get deletes entries that have not expired yet. The condition looks inverted."},
+  {"id": "r2", "file": "cache.go", "line": 53, "body": "Len says it counts entries that have not expired, but it returns len(c.items), which also counts expired entries that Get has not removed yet."},
+  {"id": "r3", "file": "cache.go", "line": 39, "body": "Get reads c.items without holding c.mu, so a concurrent Set and Get will race."},
+  {"id": "r4", "file": "purge.go", "line": 9, "body": "Purge calls onEvict while it holds c.mu, so a callback that calls Get will deadlock."}
+]

@@ -16,6 +16,7 @@ npx skills add greensock/gsap-skills   # used by motion-choreography
 | Skill | Use it when | Details |
 |---|---|---|
 | `testproof` | You add, change, review, or delete tests. Gate mode reviews new tests; audit mode blocks deletions that lose coverage. Any language. | [`evals/testproof/EVIDENCE.md`](evals/testproof/EVIDENCE.md) |
+| `reviewproof` | You review a PR, or review findings arrive for your own PR. Verifies each finding with evidence, skips what is already raised, and drafts conventional comments. Posts only after you say yes. Any language. | [`evals/reviewproof/EVIDENCE.md`](evals/reviewproof/EVIDENCE.md) |
 
 ### Visual bundle
 
@@ -52,7 +53,7 @@ evals/<skill>/     evals, not installed with the skill
 
 ## Evals
 
-Evals live in `evals/<skill>/`, outside the skill folders, so they are not installed with the skill. `testproof` has agent-agnostic evals in [`evals/testproof/harbor/`](evals/testproof/harbor/).
+Evals live in `evals/<skill>/`, outside the skill folders, so they are not installed with the skill. `testproof` and `reviewproof` have agent-agnostic evals in [`evals/testproof/harbor/`](evals/testproof/harbor/) and [`evals/reviewproof/harbor/`](evals/reviewproof/harbor/).
 
 ## License
 
