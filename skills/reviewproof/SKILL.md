@@ -74,6 +74,14 @@ Review comments:
 | **D5** `cites-line` | The body cites the `file:line` of the cause. |
 | **D6** `plain` | No em dashes, no bold, no headings, no hedges. If you cannot show the impact, drop the comment. |
 
+A comment that passes D1 to D6:
+
+```
+issue: Retry ignores the max delay
+
+backoff.go:41 doubles the delay without applying MaxDelay, so after 8 retries a client waits 4 minutes instead of the documented 30 seconds.
+```
+
 Replies in receive mode: one or two sentences. Say what you will do and why, and cite `file:line` when you disagree. No label needed.
 
 If a humanizer skill is installed, run it on each draft. Then check D1 to D6 again.
@@ -99,4 +107,4 @@ When a machine reads the result (an eval, CI, another agent), write JSON:
 ```
 
 - `id`: the incoming finding's id in receive mode, otherwise empty.
-- `comment`: the text to post, or empty when nothing should be posted.
+- `comment`: the text to post, or empty when nothing should be posted. Keep the D2 shape: the label and title, a blank line (`\n\n`), then the body. The table may shorten it, the JSON may not.

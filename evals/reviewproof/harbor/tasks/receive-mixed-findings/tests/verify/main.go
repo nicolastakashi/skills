@@ -28,7 +28,7 @@ var (
 )
 
 type finding struct {
-	ID       string `json:"id"`
+	ID       any    `json:"id"` // models write it as a string or a number
 	File     string `json:"file"`
 	Line     int    `json:"line"`
 	Verdict  string `json:"verdict"`
@@ -150,7 +150,7 @@ func formatProblem(got finding) string {
 }
 
 func (want match) matches(got finding) bool {
-	if want.ID != "" && strings.TrimSpace(got.ID) == want.ID {
+	if want.ID != "" && got.ID != nil && strings.TrimSpace(fmt.Sprint(got.ID)) == want.ID {
 		return true
 	}
 	inRange := want.File != "" && cleanPath(got.File) == want.File && got.Line >= want.From && got.Line <= want.To
