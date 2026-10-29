@@ -1,4 +1,4 @@
-This is my pull request. The code in `/app` is my branch and `/app/PR.diff` is the change. A reviewer left the findings in `/app/findings.json`. Tell me what to do with each one. Do not change the code.
+This is my pull request. The code in `/app` is my branch, `main` is the base branch, and `/app/PR.diff` is the change. A reviewer left the findings in `/app/findings.json`. Tell me what to do with each one. Do not change the code.
 
 Write `/app/review.json` with one entry per finding, using the finding's `id`:
 

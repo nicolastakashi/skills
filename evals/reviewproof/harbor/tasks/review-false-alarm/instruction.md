@@ -1,4 +1,4 @@
-Review this pull request. The code in `/app` is the PR branch and `/app/PR.diff` is the change. Comments already on the PR are in `/app/comments.json`.
+Review this pull request. The code in `/app` is the PR branch, `main` is the base branch, and `/app/PR.diff` is the change. Comments already on the PR are in `/app/comments.json`.
 
 Nothing can be posted from here. Write your review to `/app/review.json`:
 

@@ -15,7 +15,7 @@ Both modes run the same five steps: find, verify, sort, draft, post.
 
 ## 1. Find
 
-**Review mode.** If the host agent has a review tool, run it first. In Claude Code that is `/code-review`. Never pass `--comment`, because this skill posts only in step 5. If no tool exists, review the diff yourself:
+**Review mode.** Start from the host agent's review tool. If its findings are already in the conversation, for example from a `/code-review` the user ran, use them. Otherwise run it now. In Claude Code that is `/code-review`. Never pass `--comment`, because this skill posts only in step 5. Run it even when the diff is small, because it finds bugs that one read of the diff misses. A small diff or saving time is not a reason to skip it. Review the diff on your own only when the host has no review tool:
 
 1. Read the diff, then read each changed function in full.
 2. Write down the contract of each one: its doc comment, its name, and the units, limits and defaults it promises.
@@ -48,7 +48,7 @@ Give each candidate one verdict.
 
 | Verdict | Meaning | Needs |
 |---|---|---|
-| `fix` | Confirmed bug. | Evidence that shows it. |
+| `fix` | A change this PR should make to code the diff touches: a bug, a missing test for behavior the PR changes, or a wrong doc. | Evidence that shows it. The comment label says how serious it is. |
 | `decide` | Real, but the right answer is a human or product choice. | The options, and who should choose. |
 | `keep` | Leave the code as is. | The reason, for example "not in this diff, follow-up". |
 | `drop` | Checked, and it is not a problem. | What you checked, with `file:line` or a command. |
@@ -74,6 +74,14 @@ Review comments:
 | **D5** `cites-line` | The body cites the `file:line` of the cause. |
 | **D6** `plain` | No em dashes, no bold, no headings, no hedges. If you cannot show the impact, drop the comment. |
 
+A comment that passes D1 to D6:
+
+```
+issue: Retry ignores the max delay
+
+backoff.go:41 doubles the delay without applying MaxDelay, so after 8 retries a client waits 4 minutes instead of the documented 30 seconds.
+```
+
 Replies in receive mode: one or two sentences. Say what you will do and why, and cite `file:line` when you disagree. No label needed.
 
 If a humanizer skill is installed, run it on each draft. Then check D1 to D6 again.
@@ -88,7 +96,9 @@ Post only after the user says yes. Show the drafts first.
 
 ## Output
 
-Show a table to the user: `file:line`, verdict, evidence, and the draft comment.
+Show a table to the user: `file:line`, verdict, evidence, and the draft comment. Under it, add this legend: `fix` = change it in this PR, `decide` = the author chooses, `keep` = leave it for now, `drop` = checked, not a problem.
+
+Say whether the review tool ran. If it did not, say why.
 
 When a machine reads the result (an eval, CI, another agent), write JSON:
 
@@ -97,4 +107,4 @@ When a machine reads the result (an eval, CI, another agent), write JSON:
 ```
 
 - `id`: the incoming finding's id in receive mode, otherwise empty.
-- `comment`: the text to post, or empty when nothing should be posted.
+- `comment`: the text to post, or empty when nothing should be posted. Keep the D2 shape: the label and title, a blank line (`\n\n`), then the body. The table may shorten it, the JSON may not.
