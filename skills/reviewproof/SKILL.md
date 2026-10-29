@@ -15,7 +15,7 @@ Both modes run the same five steps: find, verify, sort, draft, post.
 
 ## 1. Find
 
-**Review mode.** If the host agent has a review tool, run it first. In Claude Code that is `/code-review`. Never pass `--comment`, because this skill posts only in step 5. If no tool exists, review the diff yourself:
+**Review mode.** Start from the host agent's review tool. If its findings are already in the conversation, for example from a `/code-review` the user ran, use them. Otherwise run it now. In Claude Code that is `/code-review`. Never pass `--comment`, because this skill posts only in step 5. Run it even when the diff is small, because it finds bugs that one read of the diff misses. A small diff or saving time is not a reason to skip it. Review the diff on your own only when the host has no review tool:
 
 1. Read the diff, then read each changed function in full.
 2. Write down the contract of each one: its doc comment, its name, and the units, limits and defaults it promises.
@@ -48,7 +48,7 @@ Give each candidate one verdict.
 
 | Verdict | Meaning | Needs |
 |---|---|---|
-| `fix` | Confirmed bug. | Evidence that shows it. |
+| `fix` | A change this PR should make: a bug, a missing test for behavior the PR changes, or a wrong doc. | Evidence that shows it. The comment label says how serious it is. |
 | `decide` | Real, but the right answer is a human or product choice. | The options, and who should choose. |
 | `keep` | Leave the code as is. | The reason, for example "not in this diff, follow-up". |
 | `drop` | Checked, and it is not a problem. | What you checked, with `file:line` or a command. |
@@ -88,7 +88,9 @@ Post only after the user says yes. Show the drafts first.
 
 ## Output
 
-Show a table to the user: `file:line`, verdict, evidence, and the draft comment.
+Show a table to the user: `file:line`, verdict, evidence, and the draft comment. Under it, add this legend: `fix` = change it in this PR, `decide` = the author chooses, `keep` = leave it for now, `drop` = checked, not a problem.
+
+Say whether the review tool ran. If it did not, say why.
 
 When a machine reads the result (an eval, CI, another agent), write JSON:
 
