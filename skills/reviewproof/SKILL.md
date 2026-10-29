@@ -48,7 +48,7 @@ Give each candidate one verdict.
 
 | Verdict | Meaning | Needs |
 |---|---|---|
-| `fix` | A change this PR should make: a bug, a missing test for behavior the PR changes, or a wrong doc. | Evidence that shows it. The comment label says how serious it is. |
+| `fix` | A change this PR should make to code the diff touches: a bug, a missing test for behavior the PR changes, or a wrong doc. | Evidence that shows it. The comment label says how serious it is. |
 | `decide` | Real, but the right answer is a human or product choice. | The options, and who should choose. |
 | `keep` | Leave the code as is. | The reason, for example "not in this diff, follow-up". |
 | `drop` | Checked, and it is not a problem. | What you checked, with `file:line` or a command. |
