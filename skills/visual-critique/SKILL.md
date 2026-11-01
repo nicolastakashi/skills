@@ -66,6 +66,7 @@ Use whatever this session offers, once:
 - Every arrow matches the arrow list at the top of the file, in direction too. An arrow that is not on the list, or has no evidence, is dashed and labelled "unverified", or removed.
 - The last frame shows the whole system, not a close-up.
 - Every component has a real or industry-standard name. Every mark has a label or legend entry.
+- With narration: run the checks in `visual-explainer/references/narration.md`, then ask the user to listen once.
 
 **Animation integrity (fix always)**
 - Screenshot at least three frames: start, the key step, the last frame. In each, every element sits on its anchor (time, node, row) and nothing is left over from an element that already left (orphan outlines, placeholders, half-visible marks).

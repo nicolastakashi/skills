@@ -151,6 +151,6 @@ Tab markup is in the stack reference.
 5. Load `motion-choreography` and pick the patterns that serve the "one thing".
 6. Build from the stack reference.
 7. Load `visual-critique` and do one review pass.
-8. Deliver: publish as an Artifact when available (two to four word title, one sentence description), otherwise write the file next to the work. Reply with one or two lines on what the page shows.
+8. Deliver: publish as an Artifact when available (two to four word title, one sentence description), otherwise write the file next to the work. Reply with one or two lines on what the page shows. If `references/narration.md` says the page qualifies, add its one-line offer of a narrated walkthrough. Build narration only after a yes.
 
 **Edits to an existing page** skip steps 1, 2, 4 and 5. If the edit adds or changes an arrow, do step 3 for that arrow. Edit in place, then run the edit pass from `visual-critique` before you republish. Every edit, however small: most layout bugs come from edits, not first builds.

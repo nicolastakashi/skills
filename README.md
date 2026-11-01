@@ -25,7 +25,7 @@ npx skills add greensock/gsap-skills   # used by motion-choreography
 visual-explainer ━▶ design-direction ━▶ motion-choreography ━▶ visual-critique
 ```
 
-Stack: Tailwind v4, GSAP 3.15, Lucide, Geist.
+Stack: Tailwind v4, GSAP 3.15, Lucide, Geist. Optional narrated walkthroughs need [`uv`](https://docs.astral.sh/uv/) and `ffmpeg`; the voice is [Kokoro](https://huggingface.co/hexgrad/Kokoro-82M), offline.
 
 Install the bundle (the explainer needs all four):
 

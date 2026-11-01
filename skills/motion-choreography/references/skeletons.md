@@ -147,6 +147,54 @@ addEventListener('keydown', e => { if(e.key === ' '){ e.preventDefault(); playBt
 
 The play button's filled icon comes from `.ib-main svg{fill:currentColor;stroke-width:0}`. For `rotate-ccw`, reset to `fill:none;stroke-width:2.2`.
 
+## narration
+
+When the page has a voice-over (see `visual-explainer/references/narration.md`), the audio is the clock and the timeline follows it. Add this after the `player` code; it replaces the player's handlers. `CUES` is `cues.json` from `narrate.py`; every step label `s0`, `s1` ... has at least one cue.
+
+```html
+<audio id="nr-audio" preload="auto" src="__NARRATION_DATA_URI__"></audio>
+<button class="btn tabular-nums" id="nr-rate" aria-label="Playback speed">1×</button>   <!-- inside the player row, after the pill -->
+<p id="nr-sub" class="t-small mt-3 min-h-[2.9em]" aria-live="polite">Press play to start the walkthrough.</p>
+<details class="mt-2"><summary class="t-small text-muted-fg cursor-pointer">Transcript</summary><ol id="nr-transcript" class="t-small mt-2 space-y-1"></ol></details>
+```
+
+```js
+const CUES = __NARRATION_CUES__;
+const audio = document.getElementById('nr-audio'), subtitle = document.getElementById('nr-sub');
+const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const firstCue = {}; CUES.forEach(cue => { if (!(cue.step in firstCue)) firstCue[cue.step] = cue.start; });
+const stepStart = step => step < steps.length ? firstCue['s' + step] : audio.duration;
+function followAudio(){
+  const now = audio.currentTime; let cue = CUES[0];
+  CUES.forEach(candidate => { if (candidate.start <= now) cue = candidate; });
+  const step = +cue.step.slice(1);
+  // a step plays at its own speed from its first line, then holds until the next step's line
+  tl.time(reduceMotion ? LB(step + 1) : Math.min(LB(step) + now - firstCue[cue.step], LB(step + 1)));
+  subtitle.textContent = cue.text; sync();
+}
+let frame;
+const loop = () => { followAudio(); frame = requestAnimationFrame(loop); };
+audio.addEventListener('play', () => { tl.pause(); loop(); });
+audio.addEventListener('pause', () => { cancelAnimationFrame(frame); followAudio(); });
+audio.addEventListener('seeked', followAudio);
+audio.addEventListener('ended', () => { cancelAnimationFrame(frame); tl.progress(1); sync(); });
+playBtn.onclick = () => audio.paused ? audio.play() : audio.pause();
+next.onclick = () => { audio.currentTime = stepStart(Math.min(current() + 1, steps.length - 1)); };
+prev.onclick = () => { audio.currentTime = stepStart(Math.max(0, current() - 1)); };
+seekX = event => { const box = segs.getBoundingClientRect(), width = box.width / steps.length,
+  x = gsap.utils.clamp(0, box.width - 0.01, event.clientX - box.left), step = Math.floor(x / width);
+  audio.currentTime = stepStart(step) + (x - step * width) / width * (stepStart(step + 1) - stepStart(step)); };
+const RATES = [1, 1.25, 1.5, 2], rateBtn = document.getElementById('nr-rate');
+function setRate(rate){ audio.playbackRate = rate; rateBtn.textContent = rate + '×'; try { localStorage.setItem('nr-rate', rate); } catch {} }
+rateBtn.onclick = () => setRate(RATES[(RATES.indexOf(audio.playbackRate) + 1) % RATES.length]);
+let savedRate = 1; try { savedRate = +localStorage.getItem('nr-rate') || 1; } catch {}
+setRate(RATES.includes(savedRate) ? savedRate : 1);
+document.getElementById('nr-transcript').innerHTML = CUES.map((cue, index) => `<li><button class="text-left hover:text-fg" data-cue="${index}">${cue.text}</button></li>`).join('');
+document.getElementById('nr-transcript').onclick = event => { const index = event.target.dataset.cue; if (index != null) { audio.currentTime = CUES[index].start; audio.play(); } };
+```
+
+Speed changes the voice and the animation together, because the animation follows audio time; the browser keeps the voice's pitch. In the player's `sync()`, take the icon from the audio, not the timeline: `const ic = !audio.paused ? 'pause' : (audio.ended ? 'rotate-ccw' : 'play');`. No autoplay with narration: browsers block sound without a click, and a silent start would desync the voice.
+
 ## derived text
 
 Counters and status text come from the playhead, so they are right in any direction:
