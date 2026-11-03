@@ -102,7 +102,7 @@ Use tabs when the page has three or more parts (how it works, what we decided, w
 
 - **One tab per part of the work, never per item.** `Open questions` is one tab that holds every question (Q1 to Q20 are rows in it, not tabs). Name tabs with the reader's word: `Architecture`, `Requirements`, `Open questions`, `Delivery`. Use the user's names when they gave them.
 - **Five tabs at most.** A sixth means two tabs overlap: merge them, or move content out to the tracker.
-- **The first tab is the overview:** thesis, the main animation, and one line per other tab that says what the reader finds there.
+- **The first tab is the overview:** thesis and the main animation. No section that lists or describes the other tabs: the tab bar already names them.
 - **Each tab follows the reading order above** (thesis, stage, companions, detail), with at most one animated stage.
 - **Every section opens with its answer** in one sentence: the proposal, the decision, or the status. Detail comes after.
 - **Each fact lives in one place.** If two tabs need it, one owns it and the other links to it. Before you add a section, check that no other tab already says it.

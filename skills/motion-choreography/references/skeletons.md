@@ -168,8 +168,10 @@ function followAudio(){
   const now = audio.currentTime; let cue = CUES[0];
   CUES.forEach(candidate => { if (candidate.start <= now) cue = candidate; });
   const step = +cue.step.slice(1);
-  // a step plays at its own speed from its first line, then holds until the next step's line
-  tl.time(reduceMotion ? LB(step + 1) : Math.min(LB(step) + now - firstCue[cue.step], LB(step + 1)));
+  // a step plays at its own speed from its first line, then holds until the next step's line;
+  // the hold stops just before the next label, or current() already counts the next step
+  const holdAt = step === steps.length - 1 ? LB(step + 1) : LB(step + 1) - 0.01;
+  tl.time(reduceMotion ? holdAt : Math.min(LB(step) + now - firstCue[cue.step], holdAt));
   subtitle.textContent = cue.text; sync();
 }
 let frame;
@@ -193,7 +195,17 @@ document.getElementById('nr-transcript').innerHTML = CUES.map((cue, index) => `<
 document.getElementById('nr-transcript').onclick = event => { const index = event.target.dataset.cue; if (index != null) { audio.currentTime = CUES[index].start; audio.play(); } };
 ```
 
-Speed changes the voice and the animation together, because the animation follows audio time; the browser keeps the voice's pitch. In the player's `sync()`, take the icon from the audio, not the timeline: `const ic = !audio.paused ? 'pause' : (audio.ended ? 'rotate-ccw' : 'play');`. No autoplay with narration: browsers block sound without a click, and a silent start would desync the voice.
+Speed changes the voice and the animation together, because the animation follows audio time; the browser keeps the voice's pitch. In the player's `sync()`, take the icon and the progress bar from the audio, not the timeline. A step's animation ends before its line does, so bars that follow the timeline fill early and wait:
+
+```js
+const ic = !audio.paused ? 'pause' : (audio.ended ? 'rotate-ccw' : 'play');
+const voiced = audio.duration > 0, now = audio.currentTime;   // no duration yet: fall back to the timeline
+fills.forEach((el, i) => el.style.transform = `scaleX(${gsap.utils.clamp(0, 1, voiced
+  ? (now - stepStart(i)) / (stepStart(i + 1) - stepStart(i))
+  : (t - LB(i)) / (LB(i + 1) - LB(i)))})`);
+```
+
+No autoplay with narration: browsers block sound without a click, and a silent start would desync the voice.
 
 ## derived text
 
