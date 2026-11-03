@@ -102,7 +102,7 @@ Use tabs when the page has three or more parts (how it works, what we decided, w
 
 - **One tab per part of the work, never per item.** `Open questions` is one tab that holds every question (Q1 to Q20 are rows in it, not tabs). Name tabs with the reader's word: `Architecture`, `Requirements`, `Open questions`, `Delivery`. Use the user's names when they gave them.
 - **Five tabs at most.** A sixth means two tabs overlap: merge them, or move content out to the tracker.
-- **The first tab is the overview:** thesis, the main animation, and one line per other tab that says what the reader finds there.
+- **The first tab is the overview:** thesis and the main animation. No section that lists or describes the other tabs: the tab bar already names them.
 - **Each tab follows the reading order above** (thesis, stage, companions, detail), with at most one animated stage.
 - **Every section opens with its answer** in one sentence: the proposal, the decision, or the status. Detail comes after.
 - **Each fact lives in one place.** If two tabs need it, one owns it and the other links to it. Before you add a section, check that no other tab already says it.
@@ -151,6 +151,6 @@ Tab markup is in the stack reference.
 5. Load `motion-choreography` and pick the patterns that serve the "one thing".
 6. Build from the stack reference.
 7. Load `visual-critique` and do one review pass.
-8. Deliver: publish as an Artifact when available (two to four word title, one sentence description), otherwise write the file next to the work. Reply with one or two lines on what the page shows.
+8. Deliver: publish as an Artifact when available (two to four word title, one sentence description), otherwise write the file next to the work. Reply with one or two lines on what the page shows. If `references/narration.md` says the page qualifies, add its one-line offer of a narrated walkthrough. Build narration only after a yes.
 
 **Edits to an existing page** skip steps 1, 2, 4 and 5. If the edit adds or changes an arrow, do step 3 for that arrow. Edit in place, then run the edit pass from `visual-critique` before you republish. Every edit, however small: most layout bugs come from edits, not first builds.

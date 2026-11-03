@@ -103,11 +103,11 @@ To point at specific lines, add a short comment in the code (`# never fewer than
 
 ## Tabs (Alpine)
 
-The hash keeps the open tab, so a shared link opens the right tab.
+The hash keeps the open tab, so a shared link opens the right tab. Never put `overflow-x-auto` on the tab bar: the tabs' `-mb-px` overflows it by 1px and shows a scrollbar. At most five short tabs wrap instead.
 
 ```html
 <div x-data="{tab: location.hash.slice(1) || 'overview'}" x-init="$watch('tab', t => history.replaceState(null, '', '#' + t))">
-  <nav class="flex gap-1 border-b border-border overflow-x-auto" role="tablist">
+  <nav class="flex flex-wrap gap-1 border-b border-border" role="tablist">
     <template x-for="t in ['overview','architecture','open-questions','delivery']">
       <button role="tab" class="h-9 px-3 text-[13px] font-medium -mb-px border-b-2 whitespace-nowrap"
         :class="tab === t ? 'border-fg text-fg' : 'border-transparent text-muted-fg hover:text-fg'"
