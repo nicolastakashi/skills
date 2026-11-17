@@ -1,0 +1,5 @@
+{
+  "mode": "review",
+  "verdict": "cut",
+  "rule": "G8|duplicat|redundant|already|existing|same|mutant|-1s"
+}

@@ -1,0 +1,3 @@
+#!/bin/bash
+cp /solution/policy.go /app/policy.go
+cd /app && go build ./...

@@ -1,0 +1,5 @@
+{
+  "mode": "review",
+  "verdict": "cut",
+  "rule": "G8|convention|table|row|existing|pattern|style"
+}

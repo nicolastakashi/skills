@@ -1,0 +1,5 @@
+# name|text to find|replacement (first match only, \n and \t allowed)
+reversed-order|out[i] = Percentile(values, p)|out[len(ps)-1-i] = Percentile(values, p)
+first-p-only|out[i] = Percentile(values, p)|out[i] = Percentile(values, ps[0])\n\t\t_ = p
+sorts-input|out := make([]float64, len(ps))|out := make([]float64, len(ps))\n\tsort.Float64s(values)
+drops-last|for i, p := range ps {|for i, p := range ps[:max(0, len(ps)-1)] {
