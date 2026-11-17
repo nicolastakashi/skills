@@ -1,0 +1,5 @@
+{
+  "mode": "review",
+  "verdict": "cut",
+  "rule": "G7|public|internal|private|implementation|unexported|coupl|structure"
+}

@@ -1,0 +1,6 @@
+{
+  "mode": "review",
+  "verdict": "keep",
+  "rule": ".",
+  "preserve": ["quota.go", "quota_test.go"]
+}

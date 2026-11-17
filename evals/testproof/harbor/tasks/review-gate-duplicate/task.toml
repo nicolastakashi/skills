@@ -1,0 +1,25 @@
+schema_version = "1.4"
+artifacts = []
+
+[metadata]
+category = "review-gate"
+source = "real use: operator test repeated an existing table; ACH rule, a new test must kill a mutant no existing test kills"
+
+[verifier]
+timeout_sec = 600.0
+collect = []
+
+[verifier.env]
+
+[agent]
+timeout_sec = 600.0
+
+[environment]
+network_mode = "public"
+build_timeout_sec = 600.0
+os = "linux"
+mcp_servers = []
+
+[environment.env]
+
+[solution.env]

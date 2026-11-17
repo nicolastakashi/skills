@@ -1,0 +1,5 @@
+{
+  "mode": "review",
+  "verdict": "cut",
+  "rule": "G9|isolat|order|alone|depend|shuffle|global|shared|other test"
+}

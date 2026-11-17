@@ -43,10 +43,29 @@ Where each rule comes from. Collected September 2026.
 | Model | Skill opened by itself | Without skill | With skill |
 |---|---|---|---|
 | Opus (default) | not measured | 100% on all tasks | 100% on all tasks |
-| Sonnet | 15 of 15 runs | retry-policy: `default-max` missed in 2 of 5 runs | 0 misses in 15 runs |
+| Sonnet | 32 of 35 ticket runs (see below) | retry-policy: `default-max` missed in 2 of 5 runs | 0 misses in 15 runs |
 | Haiku | 0 to 4 of 15 runs, any description | defaults missed in most runs | helps only when read |
 
 When the skill is read on purpose, Haiku catches 89% of retry-policy mutants instead of about 80%.
+
+#### When the skill opens (Sonnet, ticket tasks)
+
+The agent picks skills once, while it plans, right after it first reads the code.
+In 46 of 46 runs that opened the skill, it opened in the first 3 tool calls. No run opened it later, even runs that wrote tests later.
+So the description has to match the task at the start, not the act of writing a test.
+
+| Description | multiplier | min-delay | percentiles | docs-only (should not open) |
+|---|---|---|---|---|
+| "Use whenever you write or change a test…" | 10 of 20 | 23 of 25 | 10 of 10 | 0 of 5 |
+| "Use when implementing any feature, fix or ticket…, before the first edit, even when the change looks like a one-liner…" | 10 of 10 | 13 of 15 | 9 of 10 | 0 of 5 |
+
+An earlier version of this page said 15 of 15 for the first description. The saved runs show 12 of 15.
+
+#### Test quality on tickets
+
+Each ticket now scores the agent's tests against a reference solution and its mutants.
+Most mutants die with or without the skill. One does not: on min-delay, the floor must still win when `MaxRetryAfter` is below `Min`.
+In one round of 25 runs, that mutant died in 6 of 18 runs that opened the skill, and in 0 of 7 runs that did not.
 
 ## Limits
 

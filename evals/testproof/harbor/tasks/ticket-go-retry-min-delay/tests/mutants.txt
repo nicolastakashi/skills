@@ -1,0 +1,5 @@
+# name|text to find|replacement (first match only, \n and \t allowed)
+no-floor|if delay < floor {|if false {
+floor-ignores-max|if floor > p.Max {|if false {
+floor-skips-hint|if delay < floor {|if retryAfter <= 0 && delay < floor {
+floor-before-hint-cap|\t\tif delay > p.MaxRetryAfter {\n\t\t\tdelay = p.MaxRetryAfter\n\t\t}\n\t}\n\tfloor := p.Min\n\tif floor > p.Max {\n\t\tfloor = p.Max\n\t}\n\tif delay < floor {\n\t\tdelay = floor\n\t}|\t}\n\tfloor := p.Min\n\tif floor > p.Max {\n\t\tfloor = p.Max\n\t}\n\tif delay < floor {\n\t\tdelay = floor\n\t}\n\tif retryAfter > 0 && delay > p.MaxRetryAfter {\n\t\tdelay = p.MaxRetryAfter\n\t}

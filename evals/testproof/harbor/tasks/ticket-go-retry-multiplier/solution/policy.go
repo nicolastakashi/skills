@@ -9,7 +9,7 @@ type Policy struct {
 	Max           time.Duration // cap for the exponential delay. Default 10s.
 	MaxAttempts   int           // total attempts, including the first one. Default 5.
 	MaxRetryAfter time.Duration // cap for a server Retry-After hint. Default 60s.
-	Multiplier    float64       // growth factor per attempt. Default 2. Values below 1 use the default.
+	Multiplier    float64       // growth factor per attempt. Default 2. Values below 1, and NaN, use the default.
 }
 
 const (
@@ -30,7 +30,7 @@ func (p Policy) withDefaults() Policy {
 	if p.MaxAttempts <= 0 {
 		p.MaxAttempts = defaultMaxAttempts
 	}
-	if p.Multiplier < 1 {
+	if !(p.Multiplier >= 1) {
 		p.Multiplier = defaultMultiplier
 	}
 	if p.MaxRetryAfter <= 0 {
@@ -57,11 +57,15 @@ func NextDelay(p Policy, attempt int, retryAfter time.Duration) (delay time.Dura
 	}
 	delay = p.Base
 	for i := 1; i < attempt; i++ {
-		delay = time.Duration(float64(delay) * p.Multiplier)
-		if delay >= p.Max {
+		next := time.Duration(float64(delay) * p.Multiplier)
+		if next >= p.Max {
 			delay = p.Max
 			break
 		}
+		if next == delay {
+			break
+		}
+		delay = next
 	}
 	if retryAfter > 0 && retryAfter > delay {
 		delay = retryAfter

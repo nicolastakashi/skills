@@ -1,0 +1,8 @@
+# name|text to find|replacement (first match only, \n and \t allowed)
+ignores-multiplier|next := time.Duration(float64(delay) * p.Multiplier)|next := delay * 2
+only-zero-defaults|if !(p.Multiplier >= 1) {|if p.Multiplier == 0 {
+one-defaults|if !(p.Multiplier >= 1) {|if !(p.Multiplier > 1) {
+nan-kept|if !(p.Multiplier >= 1) {|if p.Multiplier < 1 {
+wrong-default|defaultMultiplier    = 2.0|defaultMultiplier    = 3.0
+integer-multiplier|float64(delay) * p.Multiplier)|float64(delay) * float64(int(p.Multiplier)))
+no-cap|if next >= p.Max {|if false {
